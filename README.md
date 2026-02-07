@@ -12,7 +12,7 @@
 ## 安装
 
 ```bash
-go get github.com/cypackyio/device-parser@latest
+go get github.com/cypacky-io/device-parser@latest
 ```
 
 ## 使用
@@ -23,7 +23,7 @@ package main
 import (
     "fmt"
 
-    "github.com/cypackyio/device-parser/devicemodel"
+    "github.com/cypacky-io/device-parser/devicemodel"
 )
 
 func main() {
