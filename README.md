@@ -28,6 +28,7 @@ import (
 
 func main() {
     fmt.Println(devicemodel.Lookup("iPhone18,1"))
+    fmt.Printf("%+v\n", devicemodel.LookupDetailed("iPad16,3"))
     fmt.Println(devicemodel.LookupWithPlatform(devicemodel.PlatformIPADOS, "iPad16,3"))
     fmt.Println(devicemodel.LookupWithPlatform(devicemodel.PlatformMACOS, "iMac11,2"))
     fmt.Println(devicemodel.LookupWithPlatform(devicemodel.PlatformWatchOS, "Watch1,1"))
@@ -43,6 +44,10 @@ func main() {
 - `devicemodel.Lookup(code string) string`
   - 自动跨平台查找（`ios` / `ipados` / `macos` / `tvos` / `watchos` / `visionos`）。
   - 未识别返回空字符串。
+
+- `devicemodel.LookupDetailed(code string) LookupDetail`
+  - 自动跨平台查找并返回 `{platform, name}`。
+  - 未识别返回空对象（两个字段都为空）。
 
 - `devicemodel.LookupWithPlatform(platform, code string) string`
   - 支持平台：`ios` / `ipados` / `macos` / `tvos` / `watchos` / `visionos`。

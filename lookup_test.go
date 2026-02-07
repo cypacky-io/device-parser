@@ -16,6 +16,33 @@ func TestLookupKnownIOSModel(t *testing.T) {
 	}
 }
 
+func TestLookupDetailedIOS(t *testing.T) {
+	detail := LookupDetailed("iPhone18,1")
+	if detail.Name == "" {
+		t.Fatalf("LookupDetailed(iPhone18,1) name 应返回非空")
+	}
+	if detail.Platform != PlatformIOS {
+		t.Fatalf("LookupDetailed(iPhone18,1) platform 异常: got=%q", detail.Platform)
+	}
+}
+
+func TestLookupDetailedIPadOS(t *testing.T) {
+	detail := LookupDetailed("iPad16,3")
+	if detail.Name == "" {
+		t.Fatalf("LookupDetailed(iPad16,3) name 应返回非空")
+	}
+	if detail.Platform != PlatformIPADOS {
+		t.Fatalf("LookupDetailed(iPad16,3) platform 异常: got=%q", detail.Platform)
+	}
+}
+
+func TestLookupDetailedUnknown(t *testing.T) {
+	detail := LookupDetailed("Unknown,0")
+	if detail.Name != "" || detail.Platform != "" {
+		t.Fatalf("LookupDetailed(Unknown,0) 应返回空 detail，got=%+v", detail)
+	}
+}
+
 func TestLookupWithPlatformWatchOS(t *testing.T) {
 	name := LookupWithPlatform(PlatformWatchOS, "Watch1,1")
 	if name == "" {

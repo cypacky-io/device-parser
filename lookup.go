@@ -37,35 +37,44 @@ var (
 	meta        upstreamMeta
 )
 
+type LookupDetail struct {
+	Platform string `json:"platform,omitempty"`
+	Name     string `json:"name,omitempty"`
+}
+
 func Lookup(code string) string {
+	return LookupDetailed(code).Name
+}
+
+func LookupDetailed(code string) LookupDetail {
 	loadAll()
 
 	code = strings.TrimSpace(code)
 	if code == "" {
-		return ""
+		return LookupDetail{}
 	}
 
-	if name := lookupByPrefix(code); name != "" {
-		return name
+	if detail := lookupByPrefixDetailed(code); detail.Name != "" {
+		return detail
 	}
 
 	if name := iosMap[code]; name != "" {
-		return name
+		return LookupDetail{Platform: PlatformIOS, Name: name}
 	}
 	if name := macosMap[code]; name != "" {
-		return name
+		return LookupDetail{Platform: PlatformMACOS, Name: name}
 	}
 	if name := tvosMap[code]; name != "" {
-		return name
+		return LookupDetail{Platform: PlatformTVOS, Name: name}
 	}
 	if name := watchosMap[code]; name != "" {
-		return name
+		return LookupDetail{Platform: PlatformWatchOS, Name: name}
 	}
 	if name := visionosMap[code]; name != "" {
-		return name
+		return LookupDetail{Platform: PlatformVisionOS, Name: name}
 	}
 
-	return ""
+	return LookupDetail{}
 }
 
 func LookupWithPlatform(platform, code string) string {
@@ -109,20 +118,22 @@ func normalizePlatform(platform string) string {
 	return platform
 }
 
-func lookupByPrefix(code string) string {
+func lookupByPrefixDetailed(code string) LookupDetail {
 	switch {
-	case strings.HasPrefix(code, "iPhone"), strings.HasPrefix(code, "iPad"), strings.HasPrefix(code, "iPod"):
-		return iosMap[code]
+	case strings.HasPrefix(code, "iPhone"), strings.HasPrefix(code, "iPod"):
+		return LookupDetail{Platform: PlatformIOS, Name: iosMap[code]}
+	case strings.HasPrefix(code, "iPad"):
+		return LookupDetail{Platform: PlatformIPADOS, Name: iosMap[code]}
 	case strings.HasPrefix(code, "Watch"):
-		return watchosMap[code]
+		return LookupDetail{Platform: PlatformWatchOS, Name: watchosMap[code]}
 	case strings.HasPrefix(code, "AppleTV"):
-		return tvosMap[code]
+		return LookupDetail{Platform: PlatformTVOS, Name: tvosMap[code]}
 	case strings.HasPrefix(code, "RealityDevice"):
-		return visionosMap[code]
+		return LookupDetail{Platform: PlatformVisionOS, Name: visionosMap[code]}
 	case strings.HasPrefix(code, "iMac"), strings.HasPrefix(code, "Mac"):
-		return macosMap[code]
+		return LookupDetail{Platform: PlatformMACOS, Name: macosMap[code]}
 	default:
-		return ""
+		return LookupDetail{}
 	}
 }
 
