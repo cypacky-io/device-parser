@@ -1,0 +1,59 @@
+name: Sync Apple Device Identifiers
+
+on:
+  schedule:
+    - cron: "17 3 * * 1"
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "upstream ref/tag/sha (optional)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-apple-identifiers
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Sync upstream mappings
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          if [ -n "${{ github.event.inputs.ref || '' }}" ]; then
+            python3 scripts/sync_apple_identifiers.py --ref "${{ github.event.inputs.ref }}"
+          else
+            python3 scripts/sync_apple_identifiers.py
+          fi
+
+      - name: Run tests
+        run: |
+          set -euo pipefail
+          go test ./...
+          go test -race ./...
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore: sync apple-device-identifiers data"
+          branch: "bot/sync-apple-identifiers"
+          delete-branch: true
+          title: "chore: sync apple-device-identifiers data"
+          body-path: sync-report.md
+          labels: |
+            chore
+            data-sync

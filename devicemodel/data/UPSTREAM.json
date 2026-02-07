@@ -1,0 +1,13 @@
+{
+  "counts": {
+    "ios": 174,
+    "macos": 138,
+    "tvos": 8,
+    "visionos": 2,
+    "watchos": 57
+  },
+  "synced_at_utc": "2026-02-07T02:54:08Z",
+  "upstream_ref": "ref:main",
+  "upstream_repo": "kyle-seongwoo-jun/apple-device-identifiers",
+  "upstream_sha": "b7b3acf2d1c1e8b2dec4ab71ec1d175aadd43f12"
+}
