@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""同步 Apple 设备 identifiers 映射数据到 devicemodel/data。"""
+"""同步 Apple 设备 identifiers 映射数据到 data。"""
 
 from __future__ import annotations
 
@@ -35,7 +35,7 @@ MIN_COUNTS = {
 }
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-DATA_DIR = ROOT / "devicemodel" / "data"
+DATA_DIR = ROOT / "data"
 UPSTREAM_META_PATH = DATA_DIR / "UPSTREAM.json"
 LICENSE_PATH = DATA_DIR / "LICENSE.apple-device-identifiers.txt"
 SYNC_REPORT_PATH = ROOT / "sync-report.md"

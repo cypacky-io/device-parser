@@ -38,7 +38,34 @@ var (
 )
 
 func Lookup(code string) string {
-	return LookupWithPlatform(PlatformIOS, code)
+	loadAll()
+
+	code = strings.TrimSpace(code)
+	if code == "" {
+		return ""
+	}
+
+	if name := lookupByPrefix(code); name != "" {
+		return name
+	}
+
+	if name := iosMap[code]; name != "" {
+		return name
+	}
+	if name := macosMap[code]; name != "" {
+		return name
+	}
+	if name := tvosMap[code]; name != "" {
+		return name
+	}
+	if name := watchosMap[code]; name != "" {
+		return name
+	}
+	if name := visionosMap[code]; name != "" {
+		return name
+	}
+
+	return ""
 }
 
 func LookupWithPlatform(platform, code string) string {
@@ -49,7 +76,12 @@ func LookupWithPlatform(platform, code string) string {
 		return ""
 	}
 
-	switch normalizePlatform(platform) {
+	platform = normalizePlatform(platform)
+	if platform == "" {
+		return Lookup(code)
+	}
+
+	switch platform {
 	case PlatformIOS:
 		return iosMap[code]
 	case PlatformIPADOS:
@@ -74,10 +106,24 @@ func DataVersion() (upstreamRepo, upstreamRef, syncedAtUTC string) {
 
 func normalizePlatform(platform string) string {
 	platform = strings.TrimSpace(strings.ToLower(platform))
-	if platform == "" {
-		return PlatformIOS
-	}
 	return platform
+}
+
+func lookupByPrefix(code string) string {
+	switch {
+	case strings.HasPrefix(code, "iPhone"), strings.HasPrefix(code, "iPad"), strings.HasPrefix(code, "iPod"):
+		return iosMap[code]
+	case strings.HasPrefix(code, "Watch"):
+		return watchosMap[code]
+	case strings.HasPrefix(code, "AppleTV"):
+		return tvosMap[code]
+	case strings.HasPrefix(code, "RealityDevice"):
+		return visionosMap[code]
+	case strings.HasPrefix(code, "iMac"), strings.HasPrefix(code, "Mac"):
+		return macosMap[code]
+	default:
+		return ""
+	}
 }
 
 func loadAll() {

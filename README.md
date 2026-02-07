@@ -23,7 +23,7 @@ package main
 import (
     "fmt"
 
-    "github.com/cypacky-io/device-parser/devicemodel"
+    devicemodel "github.com/cypacky-io/device-parser"
 )
 
 func main() {
@@ -41,11 +41,12 @@ func main() {
 ## API
 
 - `devicemodel.Lookup(code string) string`
-  - 默认按 iOS 查找。
+  - 自动跨平台查找（`ios` / `ipados` / `macos` / `tvos` / `watchos` / `visionos`）。
   - 未识别返回空字符串。
 
 - `devicemodel.LookupWithPlatform(platform, code string) string`
   - 支持平台：`ios` / `ipados` / `macos` / `tvos` / `watchos` / `visionos`。
+  - `platform` 为空时，等同于 `Lookup` 的自动匹配。
   - 未识别返回空字符串。
 
 - `devicemodel.DataVersion() (upstreamRepo, upstreamRef, syncedAtUTC string)`

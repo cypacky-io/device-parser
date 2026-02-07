@@ -23,6 +23,13 @@ func TestLookupWithPlatformWatchOS(t *testing.T) {
 	}
 }
 
+func TestLookupAutoDetectWatchOS(t *testing.T) {
+	name := Lookup("Watch1,1")
+	if name == "" {
+		t.Fatalf("Lookup(Watch1,1) 应自动识别 watchOS 并返回非空")
+	}
+}
+
 func TestLookupWithPlatformIPadOS(t *testing.T) {
 	name := LookupWithPlatform(PlatformIPADOS, "iPad16,3")
 	if name == "" {
@@ -37,10 +44,24 @@ func TestLookupWithPlatformMacOS(t *testing.T) {
 	}
 }
 
+func TestLookupAutoDetectMacOS(t *testing.T) {
+	name := Lookup("iMac11,2")
+	if name == "" {
+		t.Fatalf("Lookup(iMac11,2) 应自动识别 macOS 并返回非空")
+	}
+}
+
 func TestLookupWithPlatformVisionOS(t *testing.T) {
 	name := LookupWithPlatform(PlatformVisionOS, "RealityDevice14,1")
 	if name == "" {
 		t.Fatalf("LookupWithPlatform(visionos, RealityDevice14,1) 应返回非空")
+	}
+}
+
+func TestLookupAutoDetectVisionOS(t *testing.T) {
+	name := Lookup("RealityDevice14,1")
+	if name == "" {
+		t.Fatalf("Lookup(RealityDevice14,1) 应自动识别 visionOS 并返回非空")
 	}
 }
 
@@ -55,6 +76,13 @@ func TestLookupWithInvalidPlatform(t *testing.T) {
 	name := LookupWithPlatform("android", "SM-S9280")
 	if name != "" {
 		t.Fatalf("非法平台应返回空字符串，got=%q", name)
+	}
+}
+
+func TestLookupWithEmptyPlatformAutoDetect(t *testing.T) {
+	name := LookupWithPlatform("", "Watch1,1")
+	if name == "" {
+		t.Fatalf("空 platform 应走自动匹配，got=%q", name)
 	}
 }
 
