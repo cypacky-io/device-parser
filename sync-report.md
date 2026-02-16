@@ -1,9 +1,9 @@
 # Sync Report
 
 - Upstream: `kyle-seongwoo-jun/apple-device-identifiers`
-- Ref: `ref:main`
-- SHA: `b7b3acf2d1c1e8b2dec4ab71ec1d175aadd43f12`
-- SyncedAt: `2026-02-07T05:15:41Z`
+- Ref: `tag:20251022`
+- SHA: `98ca75324f7a88c1649eb5edfc266ef47b7b8193`
+- SyncedAt: `2026-02-16T05:10:39Z`
 
 ## Counts
 
